@@ -1,7 +1,7 @@
 # TMP61 temperature sensor library where the sensor is used in voltage divider configuration.
 Example: STM32 using HAL ADC polling
 
-Initialize sensor object. TMP61 is used with 10kOhm bias resistor and 3V3 bias voltage.
+Initialize sensor object. TMP61 is used with 10k Ohm bias resistor and 3V3 bias voltage. ADC resolution is 12-bit.
 
 ```
 TMP61 temp;

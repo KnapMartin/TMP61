@@ -8,6 +8,10 @@
 #ifndef INC_TMP61_H_
 #define INC_TMP61_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #define TMP61_COEF_0 (float)-4.948869300752372e-07
@@ -41,6 +45,10 @@ typedef struct
 
 void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm);
 float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading, const uint32_t vref_mV);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif /* INC_TMP61_H_ */

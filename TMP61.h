@@ -41,10 +41,11 @@ typedef struct
 	TMP61_AdcRes m_adcRes;
 	uint32_t m_voltageBias_mV;
 	uint32_t m_resistanceBias_Ohm;
+    uint32_t m_voltageVref_mV;
 } TMP61;
 
-void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm);
-float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading, const uint32_t vref_mV);
+void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm, const uint32_t voltageVref_mV);
+float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading);
 
 #ifdef __cplusplus
 }

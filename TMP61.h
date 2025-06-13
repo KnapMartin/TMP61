@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stddef.h>
 
 #define TMP61_COEF_0 (float)-4.948869300752372e-07
 #define TMP61_COEF_1 (float)0.02626742751078931
@@ -27,7 +28,6 @@ typedef enum
 
 typedef enum
 {
-	TMP61_ADC_RES_NONE = -1,
 	TMP61_ADC_RES_8_BIT = 255,
 	TMP61_ADC_RES_10_BIT = 1023,
 	TMP61_ADC_RES_12_BIT = 4095,
@@ -41,11 +41,10 @@ typedef struct
 	TMP61_AdcRes m_adcRes;
 	uint32_t m_voltageBias_mV;
 	uint32_t m_resistanceBias_Ohm;
-    uint32_t m_voltageVref_mV;
 } TMP61;
 
-void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm, const uint32_t voltageVref_mV);
-float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading);
+void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm);
+float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading, const uint32_t voltageVref_mV);
 
 #ifdef __cplusplus
 }

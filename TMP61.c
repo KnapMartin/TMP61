@@ -29,13 +29,17 @@ void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV,
 
 float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading, const uint32_t voltageVref_mV)
 {
-	if (self->m_state != TMP61_STATE_INIT) return 0.0;
+    if (self->m_state != TMP61_STATE_INIT) return 0.0;
 
-	// calculate divider voltage out
-	uint32_t voltage_mV = ((float)adcReading / (float)self->m_adcRes) * voltageVref_mV;
-	// calculate resistance (voltage divider)
-	uint32_t resistance_Ohm = (voltage_mV * self->m_resistanceBias_Ohm) / (self->m_voltageBias_mV - voltage_mV);
-	// get temperature, use 2nd order polynomial approximation
-	float temperature_C = resistance_Ohm * resistance_Ohm * TMP61_COEF_0 + resistance_Ohm * TMP61_COEF_1 + TMP61_COEF_2;
-	return temperature_C;
+    // calculate divider voltage out
+    uint32_t voltage_mV = ((float)adcReading / (float)self->m_adcRes) * voltageVref_mV;
+    int32_t denominator = (int32_t)self->m_voltageBias_mV - (int32_t)voltage_mV;
+    if (denominator == 0) {
+        // Avoid division by zero
+        return 0.0;
+    }
+    uint32_t resistance_Ohm = (voltage_mV * self->m_resistanceBias_Ohm) / denominator;
+    // get temperature, use 2nd order polynomial approximation
+    float temperature_C = resistance_Ohm * resistance_Ohm * TMP61_COEF_0 + resistance_Ohm * TMP61_COEF_1 + TMP61_COEF_2;
+    return temperature_C;
 }

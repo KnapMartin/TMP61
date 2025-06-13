@@ -7,20 +7,21 @@
 
 #include "TMP61.h"
 
-void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm)
+void TMP61_init(TMP61 *self, TMP61_AdcRes adcRes, const uint32_t voltageBias_mV, const uint32_t resistanceBias_Ohm, const uint32_t voltageVref_mV)
 {
 	self->m_adcRes = adcRes;
 	self->m_voltageBias_mV = voltageBias_mV;
 	self->m_resistanceBias_Ohm = resistanceBias_Ohm;
+	self->m_voltageVref_mV = voltageVref_mV;
 	self->m_state = TMP61_STATE_INIT;
 }
 
-float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading, const uint32_t vref_mV)
+float TMP61_get_temperature(TMP61 *self, const uint32_t adcReading)
 {
 	if (self->m_state != TMP61_STATE_INIT) return 0.0;
 
 	// calculate divider voltage out
-	uint32_t voltage_mV = ((float)adcReading / (float)self->m_adcRes) * vref_mV;
+	uint32_t voltage_mV = ((float)adcReading / (float)self->m_adcRes) * self->m_voltageVref_mV;
 	// calculate resistance (voltage divider)
 	uint32_t resistance_Ohm = (voltage_mV * self->m_resistanceBias_Ohm) / (self->m_voltageBias_mV - voltage_mV);
 	// get temperature, use 2nd order polynomial approximation
